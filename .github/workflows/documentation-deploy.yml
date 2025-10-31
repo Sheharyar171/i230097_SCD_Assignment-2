@@ -1,0 +1,50 @@
+name: Documentation Deployment
+
+# Trigger on pushes to main branch or manual trigger
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'  # Only run if files in docs/ change
+  workflow_dispatch:  # Allows manual run
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Node.js (needed if using doc build tools)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install dependencies (if your docs require any Node packages)
+      - name: Install dependencies
+        run: npm install || echo "No dependencies to install"
+
+      # Build documentation
+      - name: Build documentation
+        run: |
+          echo "Building documentation..."
+          # Replace with your actual doc build command
+          # Example: npm run docs or a markdown-to-html script
+          mkdir -p docs-build
+          cp -r docs/* docs-build/
+          echo "Documentation built ✅"
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-build
+          # Optional: set branch if you want a separate gh-pages branch
+          # publish_branch: gh-pages
+          # Optional: commit message
+          commit_message: "Automated documentation update [ci skip]"
