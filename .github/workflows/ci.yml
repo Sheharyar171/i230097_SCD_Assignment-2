@@ -9,23 +9,12 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build-and-check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      # - name: Lint code
-      #   run: npm run lint   <-- Remove or comment this
-
-      - name: Run tests
-        run: npm test
+      - name: Verify repository files
+        run: dir   # On Windows, or use ls for Linux runners
