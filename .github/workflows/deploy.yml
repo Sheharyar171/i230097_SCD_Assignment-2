@@ -18,4 +18,4 @@ jobs:
         with:
           vercel-token: ${{ secrets.SCDASSIGNMENT }}
           working-directory: .
-          vercel-args: '--prod'
+          vercel-args: '--prod --yes'   # <-- add --yes here
