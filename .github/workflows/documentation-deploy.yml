@@ -36,4 +36,13 @@ jobs:
             cp -r docs/* docs-build/
             echo "Documentation copied ✅"
           else
-            echo "No docs f
+            echo "No docs folder found, skipping copy ⚠️"
+          fi
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-build
+          commit_message: "Automated documentation update [ci skip]"
