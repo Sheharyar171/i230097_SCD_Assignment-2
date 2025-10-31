@@ -35,17 +35,14 @@ jobs:
 
       # Run tests to ensure everything works
       - name: Run tests
-        run: npm test || exit 0  # Do not fail workflow if no test script
+        run: npm test || echo "No test script, skipping"
 
-      # Commit and push updates (if any)
-      - name: Commit updated packages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          if git diff --cached --quiet; then
-            echo "No dependency updates to commit."
-          else
-            git commit -m "Automated dependency updates"
-            git push origin main
-          fi
+      # Commit and create Pull Request for updates
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Automated dependency updates"
+          branch: dependency-updates
+          title: "Automated Dependency Updates"
+          body: "This PR updates dependencies to their latest versions."
+          base: main
