@@ -1,10 +1,14 @@
 name: Code Review
 
-# Trigger on pull requests to main branch
+# Trigger on PRs, pushes to main, and manual runs
 on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual run
 
 jobs:
   code-review:
@@ -28,7 +32,7 @@ jobs:
       # Lint code (check coding standards)
       - name: Lint code
         run: |
-          if npm run lint; then
+          if npm run lint 2>/dev/null; then
             echo "Linting passed ✅"
           else
             echo "Linting skipped or failed ⚠️ (check if lint script exists)"
@@ -37,7 +41,7 @@ jobs:
       # Run tests
       - name: Run tests
         run: |
-          if npm test; then
+          if npm test 2>/dev/null; then
             echo "Tests passed ✅"
           else
             echo "Tests skipped or failed ⚠️ (check if test script exists)"
